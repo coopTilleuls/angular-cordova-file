@@ -92,6 +92,8 @@ angular.module('angular-cordova-file')
                     uploadOptions.fileName = uri.substr(uri.lastIndexOf('/') + 1);
                     uploadOptions.mimeType = this.get('contentType');
                     uploadOptions.headers = options.headers;
+                    // Android Quirk to prevent problems uploading to a Nginx server.
+                    uploadOptions.chunkedMode = false;
 
                     uploadOptions.params = options.data;
 
@@ -243,6 +245,9 @@ angular.module('angular-cordova-file')
                 });
 
                 element.on('click', function (event) {
+                    // Needed to be able to upload again file
+                    this.value = null;
+
                     if (typeof Camera != "undefined") {
                         event.preventDefault();
 
